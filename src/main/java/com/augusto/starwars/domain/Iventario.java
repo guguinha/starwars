@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /* Iventario é uma classe para separar a quantidade de cada item do iventario permitindo assim 
 ** poder adicionar qualquer novo item que venha a ser criado..
@@ -20,15 +23,20 @@ public class Iventario implements Serializable{
 	private Item item;
 	private Integer quantidade;
 	
+	@JsonIgnore
+	@ManyToOne
+	private Soldado soldado;
+	
 	public Iventario(){
 		
 	}
 
-	public Iventario(Integer id, Integer quantidade, Item item) {
+	public Iventario(Integer id, Integer quantidade, Item item, Soldado soldado) {
 		super();
 		this.id = id;
 		this.quantidade = quantidade;
 		this.item = item;
+		this.setSoldado(soldado);
 
 	}
 
@@ -55,7 +63,14 @@ public class Iventario implements Serializable{
 	public void setItem(Item item) {
 		this.item = item;
 	}
+	
+	public Soldado getSoldado() {
+		return soldado;
+	}
 
+	public void setSoldado(Soldado soldado) {
+		this.soldado = soldado;
+	}
 	
 	@Override
 	public int hashCode() {
@@ -81,7 +96,6 @@ public class Iventario implements Serializable{
 			return false;
 		return true;
 	}
-
 	
 	
 }

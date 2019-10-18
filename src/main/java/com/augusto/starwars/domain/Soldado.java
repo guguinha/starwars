@@ -1,10 +1,21 @@
 package com.augusto.starwars.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Soldado implements Serializable{
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	private Integer idade;
@@ -13,15 +24,16 @@ public class Soldado implements Serializable{
 	private Double longetude;
 	private String nomeBase;
 	private Integer tipo; // 1-> Rebelde, 2-> Traidor
-
-	private Iventario iventario;
+	
+	@OneToMany(mappedBy="soldado")
+	private List<Iventario> iventario = new ArrayList<>();
 	
 	public Soldado() {
 		
 	}
 
 	public Soldado(Integer id, String nome, Integer idade, String genero, Double latitude, Double longetude,
-			String nomeBase, Integer tipo, Iventario iventario) {
+			String nomeBase, Integer tipo) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -31,7 +43,6 @@ public class Soldado implements Serializable{
 		this.longetude = longetude;
 		this.nomeBase = nomeBase;
 		this.tipo = tipo;
-		this.iventario = iventario;
 	}
 
 	public Integer getId() {
@@ -98,14 +109,6 @@ public class Soldado implements Serializable{
 		this.tipo = tipo;
 	}
 
-	public Iventario getIventario() {
-		return iventario;
-	}
-
-	public void setIventario(Iventario iventario) {
-		this.iventario = iventario;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -130,7 +133,5 @@ public class Soldado implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-	
+
 }
