@@ -108,6 +108,14 @@ public class Soldado implements Serializable{
 	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
 	}
+	
+	public List<Iventario> getIventario() {
+		return iventario;
+	}
+
+	public void setIventario(List<Iventario> iventario) {
+		this.iventario = iventario;
+	}
 
 	@Override
 	public int hashCode() {
