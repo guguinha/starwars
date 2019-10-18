@@ -1,23 +1,35 @@
 package com.augusto.starwars.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+/* Iventario é uma classe para separar a quantidade de cada item do iventario permitindo assim 
+** poder adicionar qualquer novo item que venha a ser criado..
+*/
+@Entity
 public class Iventario implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private Item item;
+	private Integer quantidade;
 	
-	private List<IvItem> itens = new ArrayList<>();
-	
-	public Iventario() {
+	public Iventario(){
 		
 	}
 
-	public Iventario(Integer id) {
+	public Iventario(Integer id, Integer quantidade, Item item) {
 		super();
 		this.id = id;
+		this.quantidade = quantidade;
+		this.item = item;
+
 	}
 
 	public Integer getId() {
@@ -28,14 +40,23 @@ public class Iventario implements Serializable{
 		this.id = id;
 	}
 
-	public List<IvItem> getItens() {
-		return itens;
+	public Integer getQuantidade() {
+		return quantidade;
 	}
 
-	public void setItens(List<IvItem> itens) {
-		this.itens = itens;
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
 	}
 
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -60,6 +81,7 @@ public class Iventario implements Serializable{
 			return false;
 		return true;
 	}
+
 	
 	
 }
