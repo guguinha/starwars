@@ -21,4 +21,9 @@ public class SoldadoService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Soldado.class.getName()));
 	}
+	
+	public Soldado insert(Soldado soldado) {
+		soldado.setId(null); /* para garantir a inserção um novo item */
+		return repo.save(soldado);
+	}
 }
