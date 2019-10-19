@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,6 +26,7 @@ public class Iventario implements Serializable{
 	
 	@JsonIgnore
 	@ManyToOne
+	@JoinColumn(name="soldado_id")
 	private Soldado soldado;
 	
 	public Iventario(){
@@ -36,7 +38,7 @@ public class Iventario implements Serializable{
 		this.id = id;
 		this.quantidade = quantidade;
 		this.item = item;
-		this.setSoldado(soldado);
+		this.soldado = soldado;
 
 	}
 
