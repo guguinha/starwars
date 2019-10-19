@@ -33,13 +33,13 @@ public class SoldadoService {
 	}
 	
 	public Soldado update(Soldado obj) {
-		Soldado newObj = find(obj.getId()); /* caso o id não exista o find já gera uma exceção, pois não se pode dar um update se o item não existe. */
+		Soldado newObj = find(obj.getId()); /* caso o id não exista o find já gera uma exceção, pois não se pode dar um update se o soldado não existe. */
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
 	
 	public Soldado updateLocal(Soldado obj) {
-		Soldado newObj = find(obj.getId()); /* caso o id não exista o find já gera uma exceção, pois não se pode dar um update se o item não existe. */
+		Soldado newObj = find(obj.getId()); /* caso o id não exista o find já gera uma exceção, pois não se pode dar um update se o soldado não existe. */
 		updateDataLocal(newObj, obj);
 		return repo.save(newObj);
 	}
