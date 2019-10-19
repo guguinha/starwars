@@ -11,7 +11,7 @@ import com.augusto.starwars.domain.Item;
 import com.augusto.starwars.services.ItemService;
 
 @RestController
-@RequestMapping(value="/item")
+@RequestMapping(value="/itens")
 public class ItemResource {
 	
 	@Autowired

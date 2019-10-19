@@ -11,7 +11,7 @@ import com.augusto.starwars.domain.Soldado;
 import com.augusto.starwars.services.SoldadoService;
 
 @RestController
-@RequestMapping(value="/soldado")
+@RequestMapping(value="/soldados")
 public class SoldadoResource {
 	
 	

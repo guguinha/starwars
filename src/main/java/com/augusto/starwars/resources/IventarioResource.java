@@ -11,7 +11,7 @@ import com.augusto.starwars.domain.Iventario;
 import com.augusto.starwars.services.IventarioService;
 
 @RestController
-@RequestMapping(value="/iventario")
+@RequestMapping(value="/iventarios")
 public class IventarioResource {
 
 	@Autowired

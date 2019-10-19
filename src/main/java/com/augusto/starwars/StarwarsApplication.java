@@ -66,12 +66,10 @@ public class StarwarsApplication implements CommandLineRunner{
 		
 		
 		soldadoRepository.saveAll(Arrays.asList(reb1,reb2,reb3,reb4));
-		Reporte rep = new Reporte(null,reb1.getId(),reb4.getId());
-	
-		
 		itemRepository.saveAll(Arrays.asList(arma,municao,agua,comida));
-		//soldadoRepository.saveAll(Arrays.asList(reb1,reb2,reb3,reb4));
 		iventarioRepository.saveAll(Arrays.asList(iv1,iv2,iv3,iv4,iv5,iv6,iv7,iv8,iv9,iv10,iv11));
+		
+		Reporte rep = new Reporte(null,reb1.getId(),reb4.getId());
 		reporteRepository.saveAll(Arrays.asList(rep));
 		
 	}

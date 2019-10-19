@@ -11,7 +11,7 @@ import com.augusto.starwars.domain.Reporte;
 import com.augusto.starwars.services.ReporteService;
 
 @RestController
-@RequestMapping(value="/reporte")
+@RequestMapping(value="/reportes")
 public class ReporteResource {
 
 	@Autowired
