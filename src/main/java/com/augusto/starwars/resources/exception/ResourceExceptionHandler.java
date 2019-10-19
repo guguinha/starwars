@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.augusto.starwars.services.exceptions.DataIntegrityException;
+import com.augusto.starwars.services.exceptions.Forbiden;
 import com.augusto.starwars.services.exceptions.ObjectNotFoundException;
 
 @ControllerAdvice
@@ -25,5 +26,12 @@ public class ResourceExceptionHandler {
 		
 		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(Forbiden.class)
+	public ResponseEntity<StandardError> ForbidenDelete(Forbiden e, HttpServletRequest request) {
+		
+		StandardError err = new StandardError(HttpStatus.FORBIDDEN .value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
 }
