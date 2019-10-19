@@ -18,7 +18,7 @@ public class ReporteResource {
 	private ReporteService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Reporte> find(@PathVariable Integer id) {
 		
 		Reporte obj = service.find(id);
 	

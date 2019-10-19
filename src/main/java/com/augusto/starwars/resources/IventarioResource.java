@@ -18,7 +18,7 @@ public class IventarioResource {
 	private IventarioService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Iventario> find(@PathVariable Integer id) {
 		
 		Iventario obj = service.find(id);
 	

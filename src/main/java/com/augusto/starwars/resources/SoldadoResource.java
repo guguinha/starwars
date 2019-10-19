@@ -19,7 +19,7 @@ public class SoldadoResource {
 	private SoldadoService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Soldado> find(@PathVariable Integer id) {
 		
 		Soldado obj = service.find(id);
 	

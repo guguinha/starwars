@@ -18,7 +18,7 @@ public class ItemResource {
 	private ItemService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Item> find(@PathVariable Integer id) {
 		
 		Item obj = service.find(id);
 	
