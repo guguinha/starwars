@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.augusto.starwars.domain.enums.TipoSoldado;
+
 @Entity
 public class Soldado implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -24,6 +26,7 @@ public class Soldado implements Serializable{
 	private Double longetude;
 	private String nomeBase;
 	private Integer tipo; // 1-> Rebelde, 2-> Traidor
+	//private TipoSoldado tipo;
 	
 	@OneToMany(mappedBy="soldado")
 	private List<Iventario> iventario = new ArrayList<>();
@@ -33,7 +36,7 @@ public class Soldado implements Serializable{
 	}
 
 	public Soldado(Integer id, String nome, Integer idade, String genero, Double latitude, Double longetude,
-			String nomeBase, Integer tipo) {
+			String nomeBase, TipoSoldado tipo) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -42,7 +45,7 @@ public class Soldado implements Serializable{
 		this.latitude = latitude;
 		this.longetude = longetude;
 		this.nomeBase = nomeBase;
-		this.tipo = tipo;
+		this.tipo = tipo.getCod();
 	}
 
 	public Integer getId() {
@@ -101,12 +104,12 @@ public class Soldado implements Serializable{
 		this.nomeBase = nomeBase;
 	}
 
-	public Integer getTipo() {
-		return tipo;
+	public TipoSoldado getTipo() {
+		return TipoSoldado.toEnum(tipo);
 	}
 
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
+	public void setTipo(TipoSoldado tipo) {
+		this.tipo = tipo.getCod();
 	}
 	
 	public List<Iventario> getIventario() {

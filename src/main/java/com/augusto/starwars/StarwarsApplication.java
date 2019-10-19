@@ -11,6 +11,7 @@ import com.augusto.starwars.domain.Item;
 import com.augusto.starwars.domain.Iventario;
 import com.augusto.starwars.domain.Reporte;
 import com.augusto.starwars.domain.Soldado;
+import com.augusto.starwars.domain.enums.TipoSoldado;
 import com.augusto.starwars.repositories.ItemRepository;
 import com.augusto.starwars.repositories.IventarioRepository;
 import com.augusto.starwars.repositories.ReporteRepository;
@@ -42,10 +43,10 @@ public class StarwarsApplication implements CommandLineRunner{
 		Item agua = new Item(null, "Água",2);
 		Item comida = new Item(null, "Comida",1);
 		
-		Soldado reb1 = new Soldado(null, "Jefferson",32,"M",2.3754,-2.59872,"baseX75",1);
-		Soldado reb2 = new Soldado(null, "Jane",28,"F",2.3754,-2.59872,"baseX75",1);
-		Soldado reb3 = new Soldado(null, "Gigsaw",189,"M",1.2789,-17.2322,"Gilad",1);
-		Soldado reb4 = new Soldado(null, "chronus",45,"M",2.3754,-2.59872,"baseX75",1);
+		Soldado reb1 = new Soldado(null, "Jefferson",32,"M",2.3754,-2.59872,"baseX75",TipoSoldado.REBELDE);
+		Soldado reb2 = new Soldado(null, "Jane",28,"F",2.3754,-2.59872,"baseX75",TipoSoldado.REBELDE);
+		Soldado reb3 = new Soldado(null, "Gigsaw",189,"M",1.2789,-17.2322,"Gilad",TipoSoldado.REBELDE);
+		Soldado reb4 = new Soldado(null, "chronus",45,"M",2.3754,-2.59872,"baseX75",TipoSoldado.REBELDE);
 			
 		Iventario iv1 = new Iventario(null, 1, arma, reb1);
 		Iventario iv2 = new Iventario(null, 2, municao, reb1);
