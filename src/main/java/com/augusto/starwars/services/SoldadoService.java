@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.augusto.starwars.domain.Soldado;
+import com.augusto.starwars.dto.LocalizacaoDTO;
 import com.augusto.starwars.dto.SoldadoDTO;
 import com.augusto.starwars.repositories.SoldadoRepository;
 import com.augusto.starwars.services.exceptions.DataIntegrityException;
@@ -37,6 +38,12 @@ public class SoldadoService {
 		return repo.save(newObj);
 	}
 	
+	public Soldado updateLocal(Soldado obj) {
+		Soldado newObj = find(obj.getId()); /* caso o id não exista o find já gera uma exceção, pois não se pode dar um update se o item não existe. */
+		updateDataLocal(newObj, obj);
+		return repo.save(newObj);
+	}
+	
 	public void delete(Integer id) {
 		find(id);
 		try {
@@ -55,10 +62,20 @@ public class SoldadoService {
 		return new Soldado(objDTO.getId(),objDTO.getNome(),objDTO.getIdade(), objDTO.getGenero(), objDTO.getLatitude(), objDTO.getLongitude(), objDTO.getNomeBase(), null);
 	}
 	
+	public Soldado fromLocalDTO(LocalizacaoDTO objDTO) {
+		return new Soldado(objDTO.getId(), null, null, null, objDTO.getLatitude(), objDTO.getLongitude(), objDTO.getNomeBase(), null);
+	}
+	
 	public void updateData(Soldado newObj, Soldado obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setIdade(obj.getIdade());
 		newObj.setGenero(obj.getGenero()); 
+		newObj.setLatitude(obj.getLatitude()); 
+		newObj.setLongitude(obj.getLongitude()); 
+		newObj.setNomeBase(obj.getNomeBase());
+	}
+	
+	public void updateDataLocal(Soldado newObj, Soldado obj) {
 		newObj.setLatitude(obj.getLatitude()); 
 		newObj.setLongitude(obj.getLongitude()); 
 		newObj.setNomeBase(obj.getNomeBase());

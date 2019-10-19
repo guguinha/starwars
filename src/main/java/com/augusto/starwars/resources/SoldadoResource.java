@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.augusto.starwars.domain.Soldado;
+import com.augusto.starwars.dto.LocalizacaoDTO;
 import com.augusto.starwars.dto.SoldadoDTO;
 import com.augusto.starwars.services.SoldadoService;
 
@@ -58,6 +59,14 @@ public class SoldadoResource {
 		List<Soldado> list = service.findAll();
 		List<SoldadoDTO> listDTO = list.stream().map(obj -> new SoldadoDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	@RequestMapping(value="/localizacao/{id}", method=RequestMethod.PATCH)
+	public ResponseEntity<Void> updateLocal(@RequestBody LocalizacaoDTO objDTO, @PathVariable Integer id){
+		Soldado obj = service.fromLocalDTO(objDTO);
+		obj.setId(id); // para garantir que o update seja realizado no Soldado correto
+		obj = service.updateLocal(obj);
+		return ResponseEntity.noContent().build();
 	}
 	
 }
