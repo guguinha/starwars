@@ -1,8 +1,8 @@
 package com.augusto.starwars.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +29,7 @@ public class Soldado implements Serializable{
 	//private TipoSoldado tipo;
 	
 	@OneToMany(mappedBy="soldado")
-	private List<Iventario> iventario = new ArrayList<>();
+	private Set<Iventario> iventario = new HashSet<>();
 	
 	public Soldado() {
 		
@@ -112,11 +112,11 @@ public class Soldado implements Serializable{
 		this.tipo = tipo.getCod();
 	}
 	
-	public List<Iventario> getIventario() {
+	public Set<Iventario> getIventario() {
 		return iventario;
 	}
 
-	public void setIventario(List<Iventario> iventario) {
+	public void setIventario(Set<Iventario> iventario) {
 		this.iventario = iventario;
 	}
 

@@ -21,8 +21,11 @@ public class Iventario implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Item item;
 	private Integer quantidade;
+	
+	@ManyToOne
+	@JoinColumn(name="item_id")
+	private Item item;
 	
 	@JsonIgnore
 	@ManyToOne
