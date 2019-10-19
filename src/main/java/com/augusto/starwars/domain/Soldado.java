@@ -23,7 +23,7 @@ public class Soldado implements Serializable{
 	private Integer idade;
 	private String genero;
 	private Double latitude;
-	private Double longetude;
+	private Double longitude;
 	private String nomeBase;
 	private Integer tipo; // 1-> Rebelde, 2-> Traidor
 	//private TipoSoldado tipo;
@@ -35,7 +35,7 @@ public class Soldado implements Serializable{
 		
 	}
 
-	public Soldado(Integer id, String nome, Integer idade, String genero, Double latitude, Double longetude,
+	public Soldado(Integer id, String nome, Integer idade, String genero, Double latitude, Double longitude,
 			String nomeBase, TipoSoldado tipo) {
 		super();
 		this.id = id;
@@ -43,9 +43,9 @@ public class Soldado implements Serializable{
 		this.idade = idade;
 		this.genero = genero;
 		this.latitude = latitude;
-		this.longetude = longetude;
+		this.longitude = longitude;
 		this.nomeBase = nomeBase;
-		this.tipo = tipo.getCod();
+		this.tipo = (tipo==null) ? null : tipo.getCod();
 	}
 
 	public Integer getId() {
@@ -88,12 +88,12 @@ public class Soldado implements Serializable{
 		this.latitude = latitude;
 	}
 
-	public Double getLongetude() {
-		return longetude;
+	public Double getLongitude() {
+		return longitude;
 	}
 
-	public void setLongetude(Double longetude) {
-		this.longetude = longetude;
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
 	}
 
 	public String getNomeBase() {
