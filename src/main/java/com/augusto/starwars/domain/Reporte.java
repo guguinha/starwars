@@ -20,6 +20,14 @@ public class Reporte implements Serializable {
 	public Reporte() {
 		
 	}
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Reporte(Integer id, Integer id_rebelde, Integer id_traidor) {
 		super();

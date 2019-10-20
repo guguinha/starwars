@@ -46,7 +46,7 @@ public class StarwarsApplication implements CommandLineRunner{
 		Soldado reb1 = new Soldado(null, "Jefferson",32,"M",2.3754,-2.59872,"baseX75",TipoSoldado.REBELDE);
 		Soldado reb2 = new Soldado(null, "Jane",28,"F",2.3754,-2.59872,"baseX75",TipoSoldado.REBELDE);
 		Soldado reb3 = new Soldado(null, "Gigsaw",189,"M",1.2789,-17.2322,"Gilad",TipoSoldado.REBELDE);
-		Soldado reb4 = new Soldado(null, "chronus",45,"M",2.3754,-2.59872,"baseX75",TipoSoldado.REBELDE);
+		Soldado reb4 = new Soldado(null, "chronus",45,"M",2.3754,-2.59872,"baseX75",TipoSoldado.TRAIDOR);
 			
 		Iventario iv1 = new Iventario(null, 1, arma, reb1);
 		Iventario iv2 = new Iventario(null, 2, municao, reb1);
