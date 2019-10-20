@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.augusto.starwars.domain.Soldado;
 import com.augusto.starwars.dto.LocalizacaoDTO;
+import com.augusto.starwars.dto.NovoSoldadoDTO;
 import com.augusto.starwars.dto.SoldadoDTO;
 import com.augusto.starwars.services.SoldadoService;
 
@@ -33,7 +34,8 @@ public class SoldadoResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Soldado obj){
+	public ResponseEntity<Void> insert(@RequestBody NovoSoldadoDTO objDTO){
+		Soldado obj = service.fromDTO(objDTO);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
