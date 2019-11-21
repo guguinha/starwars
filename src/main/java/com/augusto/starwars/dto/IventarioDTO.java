@@ -9,6 +9,7 @@ import com.augusto.starwars.domain.Iventario;
 public class IventarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@NotEmpty(message="Preenchimento obrigatório")
 	private Integer id;
 	@NotEmpty(message="Preenchimento obrigatório")
 	private Integer quantidade;

@@ -26,8 +26,8 @@ public class Soldado implements Serializable{
 	private Double longitude;
 	private String nomeBase;
 	private Integer tipo; // 1-> Rebelde, 2-> Traidor
-	//private TipoSoldado tipo;
 	
+	//Usar HashMap para melhoraria e exclusão da classe Iventario HashMap
 	@OneToMany(mappedBy="soldado")
 	private Set<Iventario> iventario = new HashSet<>();
 	

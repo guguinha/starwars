@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,7 @@ import com.augusto.starwars.domain.Soldado;
 import com.augusto.starwars.dto.LocalizacaoDTO;
 import com.augusto.starwars.dto.NovoSoldadoDTO;
 import com.augusto.starwars.dto.SoldadoDTO;
+import com.augusto.starwars.dto.tradeDTO;
 import com.augusto.starwars.services.SoldadoService;
 
 @RestController
@@ -69,6 +71,15 @@ public class SoldadoResource {
 		obj.setId(id); // para garantir que o update seja realizado no Soldado correto
 		obj = service.updateLocal(obj);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping(value="/trade")
+	public ResponseEntity<tradeDTO> trade(@RequestBody tradeDTO objDTO){
+		service.trade(objDTO);
+		// terminar service de trade
+		// formato jason vindo do POST esta okay
+		return ResponseEntity.ok().body(objDTO);
+		//return ResponseEntity.noContent().build();
 	}
 	
 }

@@ -15,6 +15,7 @@ import com.augusto.starwars.domain.enums.TipoSoldado;
 import com.augusto.starwars.dto.LocalizacaoDTO;
 import com.augusto.starwars.dto.NovoSoldadoDTO;
 import com.augusto.starwars.dto.SoldadoDTO;
+import com.augusto.starwars.dto.tradeDTO;
 import com.augusto.starwars.repositories.ItemRepository;
 import com.augusto.starwars.repositories.IventarioRepository;
 import com.augusto.starwars.repositories.SoldadoRepository;
@@ -77,6 +78,10 @@ public class SoldadoService {
 	
 	public List<Soldado> findAll(){
 		return repo.findAll();
+	}
+	
+	public void trade(tradeDTO objDTO) {
+		
 	}
 	
 	public Soldado fromDTO(SoldadoDTO objDTO) {
