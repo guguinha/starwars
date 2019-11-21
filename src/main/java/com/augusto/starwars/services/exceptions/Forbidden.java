@@ -1,13 +1,13 @@
 package com.augusto.starwars.services.exceptions;
 
-public class Forbiden extends RuntimeException {
+public class Forbidden extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
-	public Forbiden(String msg) {
+	public Forbidden(String msg) {
 		super(msg);
 	}
 	
-	public Forbiden(String msg, Throwable cause) {
+	public Forbidden(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 }
