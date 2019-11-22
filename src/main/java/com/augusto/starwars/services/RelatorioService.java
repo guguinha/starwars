@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.augusto.starwars.domain.Iventario;
+import com.augusto.starwars.domain.IvItem;
 import com.augusto.starwars.domain.Soldado;
 import com.augusto.starwars.repositories.SoldadoRepository;
 
@@ -68,9 +68,9 @@ public class RelatorioService {
 			//Excluir Traidores
 			if(list.get(i).getTipo().getCod()==1) {
 				totalRebeldes += 1.0;
-				Iterator<Iventario> iventarioIterator = list.get(i).getIventario().iterator();
+				Iterator<IvItem> iventarioIterator = list.get(i).getIventario().iterator();
 				while (iventarioIterator.hasNext()){
-					Iventario iv = iventarioIterator.next();
+					IvItem iv = iventarioIterator.next();
 					if(iv.getItem().getId() == 1) {
 						qtRecurso1 += iv.getQuantidade();
 					}
@@ -101,9 +101,9 @@ public class RelatorioService {
 		List<Soldado> list  = repo.findAll();
 		for(int i=0;i<list.size();i++){ 
 			if(list.get(i).getTipo().getCod()==2) {
-				Iterator<Iventario> iventarioIterator = list.get(i).getIventario().iterator();
+				Iterator<IvItem> iventarioIterator = list.get(i).getIventario().iterator();
 				while (iventarioIterator.hasNext()){
-		                Iventario iv = iventarioIterator.next();
+		                IvItem iv = iventarioIterator.next();
 		                lostPoints += iv.getItem().getPontos() * iv.getQuantidade();
 		         }
 			}

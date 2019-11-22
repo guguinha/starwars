@@ -29,7 +29,7 @@ public class Soldado implements Serializable{
 	
 	//Usar HashMap para melhoraria e exclusão da classe Iventario HashMap
 	@OneToMany(mappedBy="soldado")
-	private Set<Iventario> iventario = new HashSet<>();
+	private Set<IvItem> iventario = new HashSet<>();
 	
 	public Soldado() {
 		
@@ -46,8 +46,9 @@ public class Soldado implements Serializable{
 		this.longitude = longitude;
 		this.nomeBase = nomeBase;
 		this.tipo = (tipo==null) ? null : tipo.getCod();
+		//this.iventario = iventario;
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -112,14 +113,14 @@ public class Soldado implements Serializable{
 		this.tipo = tipo.getCod();
 	}
 	
-	public Set<Iventario> getIventario() {
+	public Set<IvItem> getIventario() {
 		return iventario;
 	}
 
-	public void setIventario(Set<Iventario> iventario) {
+	public void setIventario(Set<IvItem> iventario) {
 		this.iventario = iventario;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -12,6 +12,14 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
+/*
+ * Esta entidade representa a lista de itens existentes no sistema /
+ * permitindo facilmente a adição de novos tipos de itens..
+ */
+
+//Modificar Item para tipo Enum
+
 @Entity
 public class Item implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -24,7 +32,7 @@ public class Item implements Serializable{
 	
 	@JsonIgnore
 	@OneToMany(mappedBy="item")
-	private List<Iventario> iventario = new ArrayList<>();
+	private List<IvItem> ivItem = new ArrayList<>();
 	
 	public Item() {
 		

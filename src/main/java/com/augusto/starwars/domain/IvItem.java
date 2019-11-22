@@ -11,11 +11,11 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/* Iventario é uma classe para separar a quantidade de cada item do iventario permitindo assim 
-** poder adicionar qualquer novo item que venha a ser criado..
-*/
+/* 
+ * IvItem é uma entidade de relacinamento para cada item contido no iventario de um soldado 
+ */
 @Entity
-public class Iventario implements Serializable{
+public class IvItem implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -32,17 +32,16 @@ public class Iventario implements Serializable{
 	@JoinColumn(name="soldado_id")
 	private Soldado soldado;
 	
-	public Iventario(){
+	public IvItem(){
 		
 	}
 
-	public Iventario(Integer id, Integer quantidade, Item item, Soldado soldado) {
+	public IvItem(Integer id, Integer quantidade, Item item, Soldado soldado) {
 		super();
 		this.id = id;
 		this.quantidade = quantidade;
 		this.item = item;
 		this.soldado = soldado;
-
 	}
 
 	public Integer getId() {
@@ -93,7 +92,7 @@ public class Iventario implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Iventario other = (Iventario) obj;
+		IvItem other = (IvItem) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
