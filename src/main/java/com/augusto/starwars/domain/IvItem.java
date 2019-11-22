@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /* 
@@ -22,6 +24,7 @@ public class IvItem implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Integer quantidade;
+	private Integer pontos;
 	
 	@ManyToOne
 	@JoinColumn(name="item_id")
@@ -41,6 +44,7 @@ public class IvItem implements Serializable{
 		this.id = id;
 		this.quantidade = quantidade;
 		this.item = item;
+		setPontos();
 		this.soldado = soldado;
 	}
 
@@ -76,6 +80,15 @@ public class IvItem implements Serializable{
 		this.soldado = soldado;
 	}
 	
+	public Integer getPontos() {
+		return pontos;
+	}
+	
+    @Autowired
+	public void setPontos() {
+		this.pontos = getItem().getPontos() * quantidade;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -100,6 +113,7 @@ public class IvItem implements Serializable{
 			return false;
 		return true;
 	}
+
 	
 	
 }

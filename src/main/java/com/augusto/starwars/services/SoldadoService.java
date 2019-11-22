@@ -1,8 +1,12 @@
 package com.augusto.starwars.services;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,6 +16,7 @@ import com.augusto.starwars.domain.Item;
 import com.augusto.starwars.domain.IvItem;
 import com.augusto.starwars.domain.Soldado;
 import com.augusto.starwars.domain.enums.TipoSoldado;
+import com.augusto.starwars.dto.ItemTrocaDTO;
 import com.augusto.starwars.dto.LocalizacaoDTO;
 import com.augusto.starwars.dto.NovoSoldadoDTO;
 import com.augusto.starwars.dto.SoldadoDTO;
@@ -33,6 +38,9 @@ public class SoldadoService {
 	
 	@Autowired
 	private ItemRepository itemRepository;
+	
+	@Autowired
+	private IventarioService iventarioService;
 	
 	public Soldado find(Integer id) {
 		Optional<Soldado> obj = repo.findById(id);
@@ -82,9 +90,73 @@ public class SoldadoService {
 		return repo.findAll();
 	}
 	
+	@Transactional
 	public void trade(tradeDTO objDTO) {
-		
+		List<ItemTrocaDTO> itensTrade1 = objDTO.getItens1();
+		List<ItemTrocaDTO> itensTrade2 = objDTO.getItens2();
+		Soldado soldado1 = find(objDTO.getId_soldado_1()); // Se for nulo já gera exceção no find
+		Soldado soldado2 = find(objDTO.getId_soldado_2()); // Se for nulo já gera exceção no find
+		Integer valorItens1 = valueItens(itensTrade1);
+		Integer valorItens2 = valueItens(itensTrade2);
+		if(valorItens1 == valorItens2) {
+			if(!containItens(soldado1.getIventario(), itensTrade1)) {
+				//lança exceção intens da troca não batem com o iventario
+			}
+			if(!containItens(soldado2.getIventario(), itensTrade2)) {
+				//lança exceção intens da troca não batem com o iventario
+			}
+			//realizar troca
+			
+			//remover itens dos iventarios dos dois soldados
+			for(int i = 0;i<=itensTrade1.size();i++) {
+				//recebe um IvItem, itensTrade tem que virar um IvItem
+				
+				soldado1.itemIncDec(iventarioService.fromTradeDTO(itensTrade1.get(i)), "DEC");
+			}
+			for(int i = 0;i<=itensTrade1.size();i++) {
+				soldado1.itemIncDec(iventarioService.fromTradeDTO(itensTrade1.get(i)), "DEC");
+			}
+			//adicionar itens no iventario
+			for(int i = 0;i<=itensTrade2.size();i++) {
+				soldado1.itemIncDec(iventarioService.fromTradeDTO(itensTrade2.get(i)), "INC");
+			}
+			for(int i = 0;i<=itensTrade2.size();i++) {
+				soldado1.itemIncDec(iventarioService.fromTradeDTO(itensTrade2.get(i)), "INC");
+			}
+			//finalizar troca 
+		}
+		//otimizar função 
 	}
+	
+	//Retorna o total de pontos de uma lista de itens de troca
+	public Integer valueItens(List<ItemTrocaDTO> itens) {
+		Integer totalPoints = 0;
+		for(int i=0;i<itens.size();i++){ 
+			totalPoints += itens.get(i).getPontos();
+		}
+		return totalPoints;
+	}
+	
+	// Verifica se o item da troca esta contido e se tem o suficiente no iventario do soldado
+	public boolean containItens(Set<IvItem> obj, List<ItemTrocaDTO> itensTrade) {
+		boolean estaContido;
+		for(int i=0;i<itensTrade.size();i++){ 
+			estaContido = false;//item trade esta contido e na quantidade certa no iventario do soldado ?
+			Iterator<IvItem> iventarioIterator = obj.iterator();
+			while (iventarioIterator.hasNext()){
+				IvItem iv = iventarioIterator.next();
+				if(iv.getItem().getId() == itensTrade.get(i).getId() && iv.getQuantidade() >= itensTrade.get(i).getQuantidade()) {
+					estaContido = true;
+					break;
+				}
+	         }
+			if(!estaContido) {
+				return false; // algum item da trade não bate com o iventario do soldado
+			}
+		}
+		return true;
+	}
+
 	
 	public Soldado fromDTO(SoldadoDTO objDTO) {
 		return new Soldado(objDTO.getId(),objDTO.getNome(),objDTO.getIdade(), objDTO.getGenero(), objDTO.getLatitude(), objDTO.getLongitude(), objDTO.getNomeBase(), null);

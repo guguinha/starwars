@@ -1,11 +1,14 @@
 package com.augusto.starwars.resources;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,9 +80,20 @@ public class SoldadoResource {
 	public ResponseEntity<tradeDTO> trade(@RequestBody tradeDTO objDTO){
 		service.trade(objDTO);
 		// terminar service de trade
+		
 		// formato jason vindo do POST esta okay
 		return ResponseEntity.ok().body(objDTO);
 		//return ResponseEntity.noContent().build();
+	}
+	
+	//Temporary Resource for teste
+	@GetMapping(value="/testetrade")
+	public ResponseEntity<List<Soldado>> testeTrade() {
+		List<Soldado> resposta = new ArrayList<>();
+		Soldado sold1 = service.find(1);
+		Soldado sold2 = service.find(2);
+		resposta.addAll(Arrays.asList(sold1,sold2));
+		return ResponseEntity.ok().body(resposta);
 	}
 	
 }
