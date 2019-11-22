@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.augusto.starwars.domain.Iventario;
+import com.augusto.starwars.domain.IvItem;
 import com.augusto.starwars.services.IventarioService;
 
 @RestController
@@ -19,13 +19,13 @@ public class IventarioResource {
 	private IventarioService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<Iventario> find(@PathVariable Integer id) {
-		Iventario obj = service.find(id);
+	public ResponseEntity<IvItem> find(@PathVariable Integer id) {
+		IvItem obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Iventario obj, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@RequestBody IvItem obj, @PathVariable Integer id){
 		obj.setId(id); // para garantir que o update seja realizado no Soldado correto
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();

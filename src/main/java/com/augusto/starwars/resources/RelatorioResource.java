@@ -18,26 +18,26 @@ public class RelatorioResource {
 	private RelatorioService service;
 
 	@RequestMapping(value="/traidores", method=RequestMethod.GET)
-	public ResponseEntity<Double> traidores() {
-		Double traidores = service.traidores();
+	public ResponseEntity<String> traidores() {
+		String traidores = service.traidores();
 		return ResponseEntity.ok().body(traidores);
 	}
 	
 	@RequestMapping(value="/rebeldes", method=RequestMethod.GET)
-	public ResponseEntity<Double> rebeldes() {
-		Double rebeldes = service.rebeldes();
+	public ResponseEntity<String> rebeldes() {
+		String rebeldes = service.rebeldes();
 		return ResponseEntity.ok().body(rebeldes);
 	}
 	
-	@RequestMapping(value="/recursos/media", method=RequestMethod.GET)
-	public ResponseEntity<List<Double>> mediaRecurso() {
-		List<Double> recursos = service.mediaRecurso();
+	@RequestMapping(value="/recursosmedia", method=RequestMethod.GET)
+	public ResponseEntity<List<String>> mediaRecurso() {
+		List<String> recursos = service.mediaRecurso();
 		return ResponseEntity.ok().body(recursos);
 	}
 	
 	@RequestMapping(value="/perdas", method=RequestMethod.GET)
-	public ResponseEntity<Double> pontosPerdidos() {
-		Double pontosPerdidos = service.pontosPerdidos();
+	public ResponseEntity<String> pontosPerdidos() {
+		String pontosPerdidos = service.pontosPerdidos();
 		return ResponseEntity.ok().body(pontosPerdidos);
 	}
 }

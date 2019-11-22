@@ -5,10 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.augusto.starwars.domain.Iventario;
+import com.augusto.starwars.domain.IvItem;
 import com.augusto.starwars.dto.IventarioDTO;
 import com.augusto.starwars.repositories.IventarioRepository;
-import com.augusto.starwars.services.exceptions.Forbiden;
+import com.augusto.starwars.services.exceptions.Forbidden;
 import com.augusto.starwars.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -17,23 +17,23 @@ public class IventarioService {
 	@Autowired	
 	private IventarioRepository repo;
 	
-	public Iventario find(Integer id) {
-		Optional<Iventario> obj = repo.findById(id);
+	public IvItem find(Integer id) {
+		Optional<IvItem> obj = repo.findById(id);
 		
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Iventario.class.getName()));
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + IvItem.class.getName()));
 	}
 	
 	public void delete(Integer id) {
-		throw new Forbiden("Não é possivel excluir iventario");
+		throw new Forbidden("Não é possivel excluir iventario");
 	}
 	
-	public Iventario update(Iventario obj) {
-		throw new Forbiden("Não é possivel excluir iventario");
+	public IvItem update(IvItem obj) {
+		throw new Forbidden("Não é possivel alterar iventario");
 	}
 	
-	public Iventario fromDTO(IventarioDTO objDTO) {
-		return new Iventario(objDTO.getId(),objDTO.getQuantidade(),null, null);
+	public IvItem fromDTO(IventarioDTO objDTO) {
+		return new IvItem(objDTO.getId(),objDTO.getQuantidade(),null, null);
 	}
 	
 }

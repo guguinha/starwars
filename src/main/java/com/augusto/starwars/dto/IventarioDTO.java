@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
 
-import com.augusto.starwars.domain.Iventario;
+import com.augusto.starwars.domain.IvItem;
 
 public class IventarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@NotEmpty(message="Preenchimento obrigatório")
 	private Integer id;
 	@NotEmpty(message="Preenchimento obrigatório")
 	private Integer quantidade;
@@ -17,7 +18,7 @@ public class IventarioDTO implements Serializable {
 		
 	}
 	
-	public IventarioDTO(Iventario obj) {
+	public IventarioDTO(IvItem obj) {
 		id = obj.getId();
 		quantidade = obj.getQuantidade();
 	}

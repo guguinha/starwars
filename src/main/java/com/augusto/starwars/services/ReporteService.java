@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.augusto.starwars.domain.Reporte;
-import com.augusto.starwars.domain.Soldado;
 import com.augusto.starwars.repositories.ReporteRepository;
 import com.augusto.starwars.services.exceptions.ObjectNotFoundException;
 
