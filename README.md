@@ -74,11 +74,11 @@ Você irá desenvolver uma **API REST** (sim, nós levamos a arquitetura da apli
 # Tasks 
 
 - [x] Adicionar rebeldes
-- [x] Atualizar localização do rebelde OK
-- [] Reportar o rebelde como um traidor NOT
-   -  [ ] Modificar Rebelde como traidor NOT
-- [ ] Rebeldes não podem Adicionar/Remover itens do seu inventário Verificar NOT
-- [ ] Negociar itens NOT
+- [x] Atualizar localização do rebelde
+- [ ] Reportar o rebelde como um traidor
+   -  [ ] Modificar Rebelde como traidor
+- [ ] Rebeldes não podem Adicionar/Remover itens do seu inventário Verificar
+- [ ] Negociar itens
 - [x] Relatórios Porcentagem de traidores
 - [x] Relatórios Porcentagem de rebeldes
 - [x] Relatórios Quantidade média de cada tipo de recurso por rebelde
