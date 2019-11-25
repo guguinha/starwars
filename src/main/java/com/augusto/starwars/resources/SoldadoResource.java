@@ -83,11 +83,11 @@ public class SoldadoResource {
 		
 		// formato jason vindo do POST esta okay
 		return ResponseEntity.ok().body(objDTO);
-		//return ResponseEntity.noContent().build();
+		//return ResponseEntity.noContent().build();		
 	}
 	
 	//Temporary Resource for teste
-	@GetMapping(value="/testetrade")
+	@GetMapping(value="/tradeteste")
 	public ResponseEntity<List<Soldado>> testeTrade() {
 		List<Soldado> resposta = new ArrayList<>();
 		Soldado sold1 = service.find(1);

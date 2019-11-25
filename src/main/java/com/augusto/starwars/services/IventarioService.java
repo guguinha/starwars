@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.augusto.starwars.domain.Item;
 import com.augusto.starwars.domain.IvItem;
+import com.augusto.starwars.domain.Soldado;
 import com.augusto.starwars.dto.ItemTrocaDTO;
 import com.augusto.starwars.repositories.IventarioRepository;
 import com.augusto.starwars.services.exceptions.Forbidden;
@@ -28,6 +29,13 @@ public class IventarioService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + IvItem.class.getName()));
 	}
 	
+	public IvItem findByIvItem(IvItem i ) {
+		Optional<IvItem> obj = repo.findByItemAndSoldado(i.getItem(),i.getSoldado());
+		
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Soldado.id: " + i.getSoldado().getId() + ", Item.id: " + i.getItem().getId() +", Tipo: " + IvItem.class.getName()));
+	}
+	
 	public void delete(Integer id) {
 		throw new Forbidden("Não é possivel excluir iventario");
 	}
@@ -40,9 +48,9 @@ public class IventarioService {
 		return new IvItem(objDTO.getId(),objDTO.getQuantidade(),null, null);
 	}
 	
-	public IvItem fromTradeDTO(ItemTrocaDTO objDTO) {
+	public IvItem fromTradeDTO(ItemTrocaDTO objDTO,Soldado soldado) {
 		Item item = itemService.find(objDTO.getId());
-		IvItem novo = new IvItem(null, objDTO.getQuantidade(), item , null);
+		IvItem novo = new IvItem(null, objDTO.getQuantidade(), item , soldado);
 		return novo;
 	}
 	

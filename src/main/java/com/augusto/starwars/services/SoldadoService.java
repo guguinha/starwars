@@ -34,13 +34,16 @@ public class SoldadoService {
 	private SoldadoRepository repo;
 	
 	@Autowired
-	private IventarioRepository iventariorepository;
+	private IventarioRepository iventarioRepository;
 	
 	@Autowired
 	private ItemRepository itemRepository;
 	
 	@Autowired
 	private IventarioService iventarioService;
+	
+	@Autowired
+	private ItemService itemService;
 	
 	public Soldado find(Integer id) {
 		Optional<Soldado> obj = repo.findById(id);
@@ -52,7 +55,7 @@ public class SoldadoService {
 	public Soldado insert(Soldado soldado) {
 		soldado.setId(null); /* para garantir a inserção um novo soldado */
 		soldado = repo.save(soldado);
-		iventariorepository.saveAll(soldado.getIventario());
+		iventarioRepository.saveAll(soldado.getIventario());
 		return soldado;
 	}
 	
@@ -90,43 +93,122 @@ public class SoldadoService {
 		return repo.findAll();
 	}
 	
+	//otimizar função 
 	@Transactional
 	public void trade(tradeDTO objDTO) {
+		int i; // contador
+		Item item;
 		List<ItemTrocaDTO> itensTrade1 = objDTO.getItens1();
 		List<ItemTrocaDTO> itensTrade2 = objDTO.getItens2();
+		for(i = 0;i<itensTrade1.size();i++) {
+			item = itemService.find(itensTrade1.get(i).getId());
+			itensTrade1.get(i).setPontos(item.getPontos());
+		}
+		for(i = 0;i<itensTrade2.size();i++) {
+			item = itemService.find(itensTrade2.get(i).getId());
+			itensTrade2.get(i).setPontos(item.getPontos());
+		}
 		Soldado soldado1 = find(objDTO.getId_soldado_1()); // Se for nulo já gera exceção no find
 		Soldado soldado2 = find(objDTO.getId_soldado_2()); // Se for nulo já gera exceção no find
 		Integer valorItens1 = valueItens(itensTrade1);
 		Integer valorItens2 = valueItens(itensTrade2);
 		if(valorItens1 == valorItens2) {
 			if(!containItens(soldado1.getIventario(), itensTrade1)) {
-				//lança exceção intens da troca não batem com o iventario
+				//lança exceção intens da troca não batem com o iventario2
+				return;
 			}
 			if(!containItens(soldado2.getIventario(), itensTrade2)) {
-				//lança exceção intens da troca não batem com o iventario
+				//lança exceção intens da troca não batem com o iventario2
+				return;
 			}
 			//realizar troca
 			
 			//remover itens dos iventarios dos dois soldados
-			for(int i = 0;i<=itensTrade1.size();i++) {
-				//recebe um IvItem, itensTrade tem que virar um IvItem
+			for(i = 0;i<itensTrade1.size();i++) {
 				
-				soldado1.itemIncDec(iventarioService.fromTradeDTO(itensTrade1.get(i)), "DEC");
+				//recebe um IvItem, itensTrade tem que virar um IvItem
+				itemIncDec(iventarioService.fromTradeDTO(itensTrade1.get(i),soldado1), "DEC");
 			}
-			for(int i = 0;i<=itensTrade1.size();i++) {
-				soldado1.itemIncDec(iventarioService.fromTradeDTO(itensTrade1.get(i)), "DEC");
+			for(i = 0;i<itensTrade2.size();i++) {
+				itemIncDec(iventarioService.fromTradeDTO(itensTrade2.get(i),soldado2), "DEC");
 			}
 			//adicionar itens no iventario
-			for(int i = 0;i<=itensTrade2.size();i++) {
-				soldado1.itemIncDec(iventarioService.fromTradeDTO(itensTrade2.get(i)), "INC");
+			for(i = 0;i<itensTrade2.size();i++) {
+				itemIncDec(iventarioService.fromTradeDTO(itensTrade2.get(i),soldado1), "INC");
 			}
-			for(int i = 0;i<=itensTrade2.size();i++) {
-				soldado1.itemIncDec(iventarioService.fromTradeDTO(itensTrade2.get(i)), "INC");
+			for(i = 0;i<itensTrade1.size();i++) {
+				itemIncDec(iventarioService.fromTradeDTO(itensTrade1.get(i),soldado2), "INC");
 			}
+			/*     Juntar os for iguais     */
 			//finalizar troca 
+		}else {
+			//valor da troca não bate
 		}
-		//otimizar função 
 	}
+	
+	// Incrememnta ou decrementa item
+		public void itemIncDec(IvItem ivItem, String opcao) {
+			Soldado soldado = ivItem.getSoldado();
+			Iterator<IvItem> ivIterator = soldado.getIventario().iterator();
+			// antes é feito o teste se o soldado tem os itens para troca, em caso de decremento aqui é certo que vai achar o item
+			boolean itemNovo = true;
+			while (ivIterator.hasNext()){
+				IvItem iv = ivIterator.next();
+				if(iv.getItem().getId() == ivItem.getItem().getId() ) {
+					itemNovo = false;
+					//incrementa 
+					if(opcao.equals("INC")) {
+						iv.setQuantidade(iv.getQuantidade() + ivItem.getQuantidade());
+						iventarioRepository.save(iv);
+						break;
+					}else {
+					//ou decrementa
+						if(opcao.equals("DEC")) {
+							if(iv.getQuantidade() == ivItem.getQuantidade()){
+								// remove
+								//ivIterator.remove();
+								IvItem ivItem2 = iventarioService.findByIvItem(ivItem);
+								iv.getSoldado().getIventario().remove(ivItem2);
+								//limpar referencia dos iventarios removidos nos itens
+								iventarioRepository.save(iv);
+								
+								//verificar necessidade de salvar item também
+								
+								//ivItem.getSoldado().getIventario().remove(ivItem2);
+								System.out.println(soldado);
+								break;
+							}else 
+								if(iv.getQuantidade() > ivItem.getQuantidade()) {
+									iv.setQuantidade(iv.getQuantidade() - ivItem.getQuantidade());
+									iventarioRepository.save(iv);
+									break;
+								}else {
+									// erro na quantidade a ser removida
+									break;
+								}
+								
+						}else {
+							//error na opção escolhida
+							break;
+						}
+					}
+				}
+			}
+			if(itemNovo) {
+				// item não esta disponivel no iventario
+				if(opcao.equals("INC")) {
+					//adiciona novo item no iventario
+					IvItem ivItem2 = new IvItem(ivItem);
+					soldado.getIventario().add(ivItem2);
+					iventarioRepository.save(ivItem2);
+					//soldado.getIventario().add(ivItem2);
+					repo.save(soldado);	
+				}else {
+					//não da para remover um item ausente
+				}
+			}
+			
+		}
 	
 	//Retorna o total de pontos de uma lista de itens de troca
 	public Integer valueItens(List<ItemTrocaDTO> itens) {
@@ -149,9 +231,10 @@ public class SoldadoService {
 					estaContido = true;
 					break;
 				}
-	         }
+	        }
 			if(!estaContido) {
 				return false; // algum item da trade não bate com o iventario do soldado
+				//item inesistente ou quantidade insuficiente..
 			}
 		}
 		return true;

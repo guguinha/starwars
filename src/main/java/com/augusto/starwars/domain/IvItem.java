@@ -47,6 +47,16 @@ public class IvItem implements Serializable{
 		setPontos();
 		this.soldado = soldado;
 	}
+	
+	public IvItem(IvItem ivItem) {
+		super();
+		this.id = ivItem.getId();
+		this.quantidade = ivItem.getQuantidade();
+		this.item = ivItem.getItem();
+		setPontos();
+		this.soldado = ivItem.getSoldado();
+	}
+	
 
 	public Integer getId() {
 		return id;

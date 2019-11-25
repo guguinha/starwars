@@ -2,7 +2,6 @@ package com.augusto.starwars.domain;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -16,7 +15,7 @@ import com.augusto.starwars.domain.enums.TipoSoldado;
 @Entity
 public class Soldado implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -48,47 +47,6 @@ public class Soldado implements Serializable{
 		this.nomeBase = nomeBase;
 		this.tipo = (tipo==null) ? null : tipo.getCod();
 		//this.iventario = iventario;
-	}
-	
-	// Incrememnta ou decrementa item
-	public void itemIncDec(IvItem ivItem, String opcao) {
-		Iterator<IvItem> ivIterator = this.iventario.iterator();
-		while (ivIterator.hasNext()){
-			IvItem iv = ivIterator.next();
-			if(iv.getId() == ivItem.getId()) {
-				//incrementa 
-				if(opcao == "INC") {
-					iv.setQuantidade(iv.getQuantidade() + ivItem.getQuantidade());
-					break;
-				}else
-				//ou decrementa
-					if(opcao == "DEC") {
-						if(iv.getQuantidade() == ivItem.getQuantidade()){
-							// remove
-							ivIterator.remove();
-							break;
-						}else 
-							if(iv.getQuantidade() > ivItem.getQuantidade()) {
-								iv.setQuantidade(iv.getQuantidade() - ivItem.getQuantidade());
-								break;
-							}else {
-								// erro na quantidade a ser removida
-								break;
-							}
-							
-					}else {
-						//error na opção escolhida
-						break;
-					}
-			}else {
-				// item não esta disponivel no iventario
-				if(opcao == "INC") {
-					//adiciona novo item no iventario
-					this.iventario.add(ivItem);
-					break;
-				}
-			}
-		}
 	}
 	
 	public Integer getId() {

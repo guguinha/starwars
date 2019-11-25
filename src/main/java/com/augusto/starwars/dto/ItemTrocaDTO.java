@@ -4,16 +4,11 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.augusto.starwars.domain.IvItem;
-import com.augusto.starwars.repositories.ItemRepository;
 
 public class ItemTrocaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
-	private ItemRepository itemRepository;
 	
 	@NotEmpty(message="Preenchimento obrigatório")
 	private Integer idItem; //id do item referido
@@ -29,7 +24,7 @@ public class ItemTrocaDTO implements Serializable {
 	public ItemTrocaDTO(IvItem obj) {
 		idItem = obj.getId();
 		quantidade = obj.getQuantidade();
-		setPontos();
+		//setPontos();
 	}
 
 	public Integer getId() {
@@ -52,9 +47,8 @@ public class ItemTrocaDTO implements Serializable {
 		return pontos;
 	}
 	
-	@Autowired
-	public void setPontos() {
-		this.pontos = itemRepository.findById(this.getId()).get().getPontos() * quantidade;
+	public void setPontos(Integer pontos) {
+		this.pontos = pontos * quantidade;
 	}
 
 }
