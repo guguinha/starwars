@@ -57,6 +57,14 @@ public class IvItem implements Serializable{
 		this.soldado = ivItem.getSoldado();
 	}
 	
+	//remove as referencias para outros objetos deixando a cargo do Garbage Colector finalizar o objeto
+	public void delete() {
+		this.soldado.getIventario().remove(this);
+		this.soldado = null;
+		this.item.getIvItem().remove(this);
+		this.item = null;		
+	}
+	
 
 	public Integer getId() {
 		return id;

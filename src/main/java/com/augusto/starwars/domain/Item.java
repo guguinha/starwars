@@ -69,6 +69,14 @@ public class Item implements Serializable{
 		this.pontos = pontos;
 	}
 
+	public List<IvItem> getIvItem() {
+		return ivItem;
+	}
+
+	public void setIvItem(List<IvItem> ivItem) {
+		this.ivItem = ivItem;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

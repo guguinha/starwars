@@ -79,11 +79,8 @@ public class SoldadoResource {
 	@PostMapping(value="/trade")
 	public ResponseEntity<tradeDTO> trade(@RequestBody tradeDTO objDTO){
 		service.trade(objDTO);
-		// terminar service de trade
-		
-		// formato jason vindo do POST esta okay
-		return ResponseEntity.ok().body(objDTO);
-		//return ResponseEntity.noContent().build();		
+		// conferir e melhorar service de trade
+		return ResponseEntity.noContent().build();		
 	}
 	
 	//Temporary Resource for teste
