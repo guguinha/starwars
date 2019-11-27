@@ -25,7 +25,9 @@ import com.augusto.starwars.repositories.ItemRepository;
 import com.augusto.starwars.repositories.IventarioRepository;
 import com.augusto.starwars.repositories.SoldadoRepository;
 import com.augusto.starwars.services.exceptions.DataIntegrityException;
+import com.augusto.starwars.services.exceptions.ForbiddenTraidor;
 import com.augusto.starwars.services.exceptions.ObjectNotFoundException;
+import com.augusto.starwars.services.exceptions.TradeException;
 
 @Service
 public class SoldadoService {
@@ -94,13 +96,15 @@ public class SoldadoService {
 	}
 	
 	//otimizar função 
-	//verificar se algum soldado é traidor, não é permitido troca com traidores
 	@Transactional
 	public void trade(tradeDTO objDTO) {
 		int i; // contador
 		Item item;
 		List<ItemTrocaDTO> itensTrade1 = objDTO.getItens1();
 		List<ItemTrocaDTO> itensTrade2 = objDTO.getItens2();
+		if(itensTrade1.isEmpty() || itensTrade2.isEmpty()) {
+			throw new DataIntegrityException("Os itens da trade devem ser passados na requisição");
+		}
 		//seta o item da trade o item correspondente apartir do id recebido
 		for(i = 0;i<itensTrade1.size();i++) {
 			item = itemService.find(itensTrade1.get(i).getId());
@@ -113,20 +117,21 @@ public class SoldadoService {
 		}
 		Soldado soldado1 = find(objDTO.getId_soldado_1()); // Se for nulo já gera exceção no find
 		Soldado soldado2 = find(objDTO.getId_soldado_2()); // Se for nulo já gera exceção no find
+		if(soldado1.getTipo().equals(TipoSoldado.TRAIDOR) || soldado2.getTipo().equals(TipoSoldado.TRAIDOR) ) {
+			throw new ForbiddenTraidor("Traidores não podem fazer negociações");
+		}
 		Integer valorItens1 = valueItens(itensTrade1);
 		Integer valorItens2 = valueItens(itensTrade2);
 		if(valorItens1 == valorItens2) {
-			if(!containItens(soldado1.getIventario(), itensTrade1)) {
-				//lança exceção itens da troca não batem com o iventario1
-				return;
+			try {
+				containItens(soldado1.getIventario(), itensTrade1);
+					//lança exceção itens da troca não batem com o iventario1		
+				containItens(soldado2.getIventario(), itensTrade2);
+					//lança exceção itens da troca não batem com o iventario2
+			}catch (TradeException e) {
+				throw new TradeException(e.getMessage()); 
 			}
-			if(!containItens(soldado2.getIventario(), itensTrade2)) {
-				//lança exceção itens da troca não batem com o iventario2
-				return;
-			}
-			//realizar troca
-			
-			//remover itens dos iventarios dos dois soldados
+			//inicio da troca
 			for(i = 0;i<itensTrade1.size();i++) {				
 				//recebe um IvItem, itensTrade tem que virar um IvItem
 				itemIncDec(iventarioService.fromTradeDTO(itensTrade1.get(i),soldado1), "DEC");
@@ -136,78 +141,87 @@ public class SoldadoService {
 				itemIncDec(iventarioService.fromTradeDTO(itensTrade2.get(i),soldado2), "DEC");
 				itemIncDec(iventarioService.fromTradeDTO(itensTrade2.get(i),soldado1), "INC");
 			}	
-			//finalizar troca 
+			//fim troca 
+			return;
 		}else {
-			//valor da troca não bate
+			throw new TradeException("Os itens solicitados na troca não são equivalentes. itens1: " 
+		+ valorItens1 + " pontos, itens2: " + valorItens2 + " pontos." );
 		}
 	}
 	
-	// Incrememnta ou decrementa item
+	// Incrememnta ou decrementa item do iventario
 		public void itemIncDec(IvItem ivItem, String opcao) {
 			Soldado soldado = ivItem.getSoldado();
 			Iterator<IvItem> ivIterator = soldado.getIventario().iterator();
-			// antes é feito o teste se o soldado tem os itens para troca, em caso de decremento aqui é certo que vai achar o item
+			/*
+			 *  antes é feito o teste se o soldado tem os itens para troca, 
+			 *  em caso de decremento aqui é certo que vai achar o item porem algusn testes são refeitos na função.
+			*/
 			boolean itemNovo = true;
-			while (ivIterator.hasNext()){
-				IvItem iv = ivIterator.next();
-				if(iv.getItem().getId() == ivItem.getItem().getId() ) {
-					itemNovo = false;
-					//incrementa 
-					if(opcao.equals("INC")) {
-						iv.setQuantidade(iv.getQuantidade() + ivItem.getQuantidade());
-						iventarioRepository.save(iv);
-						break;
-					}else {
-					//ou decrementa
-						if(opcao.equals("DEC")) {
-							if(iv.getQuantidade() == ivItem.getQuantidade()){
-								// remove
-								//ivIterator.remove();
-								//IvItem ivItem2 = iventarioService.findByIvItem(ivItem);
-								//ivItem.setId(iventarioService.findByIvItem(ivItem).getId());
-								iventarioRepository.delete(iv);
-								iv.delete();
-								/*iv.getSoldado().getIventario().remove(ivItem2);
-								//limpar referencia dos iventarios removidos nos itens e no soldado
-										
-										ivItem2.setSoldado(null);
-										ivItem2.getItem().getIvItem().remove(ivItem2);
-										ivItem2.setItem(null);
-								*/
-																
-								//no banco ao remover um iventario as referencias para soldado e item são removidas, mas no programa continua 
-												
-								//verificar necessidade de salvar item também
-				
-								break;
-							}else 
-								if(iv.getQuantidade() > ivItem.getQuantidade()) {
-									iv.setQuantidade(iv.getQuantidade() - ivItem.getQuantidade());
-									iventarioRepository.save(iv);
-									break;
-								}else {
-									// erro na quantidade a ser removida
-									break;
-								}
-								
-						}else {
-							//error na opção escolhida
+			if(!opcao.equals("INC") && !opcao.equals("DEC")) {
+				//error na opção escolhida
+				throw new DataIntegrityException("Opção Inválida");
+			}else {
+				while (ivIterator.hasNext()){
+					IvItem iv = ivIterator.next();
+					if(iv.getItem().getId() == ivItem.getItem().getId() ) {
+						itemNovo = false;
+						//incrementa 
+						if(opcao.equals("INC")) {
+							iv.setQuantidade(iv.getQuantidade() + ivItem.getQuantidade());
+							try {
+								iventarioRepository.save(iv);
+							}
+							catch (DataIntegrityViolationException e) {
+								throw new DataIntegrityException("Não foi possivel salvar iventário");
+							}
 							break;
+						}else {
+						//ou decrementa
+							if(opcao.equals("DEC")) {
+								if(iv.getQuantidade() == ivItem.getQuantidade()){
+									try {
+										iventarioRepository.delete(iv);
+										iv.delete();
+									}
+									catch (DataIntegrityViolationException e) {
+										throw new DataIntegrityException("Não é possivel excluir iventário, há entidades relacionadas");
+									}		
+									break;
+								}else 
+									if(iv.getQuantidade() > ivItem.getQuantidade()) {
+										iv.setQuantidade(iv.getQuantidade() - ivItem.getQuantidade());
+										try {
+											iventarioRepository.save(iv);
+										}
+										catch (DataIntegrityViolationException e) {
+											throw new DataIntegrityException("Não foi possivel salvar iventário");
+										}
+										break;
+									}else {
+										// erro na quantidade a ser removida
+										throw new TradeException("item: " + iv.getItem().getId() + ", não pode ser subitraido pois o soldado: " + soldado.getId() + ", não tem a quantia solicitada deste item");
+									}
+									
+							}
 						}
 					}
 				}
-			}
-			if(itemNovo) {
-				// item não esta disponivel no iventario
-				if(opcao.equals("INC")) {
-					//adiciona novo item no iventario
-					IvItem ivItem2 = new IvItem(ivItem);
-					soldado.getIventario().add(ivItem2);
-					iventarioRepository.save(ivItem2);
-					//soldado.getIventario().add(ivItem2);
-					//repo.save(soldado);	
-				}else {
-					//não da para remover um item ausente
+				if(itemNovo) {
+					// item não esta disponivel no iventario
+					if(opcao.equals("INC")) {
+						//adiciona novo item no iventario
+						IvItem ivItem2 = new IvItem(ivItem);
+						soldado.getIventario().add(ivItem2);
+						iventarioRepository.save(ivItem2);
+						//soldado.getIventario().add(ivItem2);
+						//repo.save(soldado);	
+					}else {
+						if(opcao.equals("DEC")) {
+							//não da para remover um item ausente
+							throw new DataIntegrityException("Não é possivel excluir um item ausente do iventário");
+						}
+					}
 				}
 			}
 			
@@ -226,7 +240,8 @@ public class SoldadoService {
 	public boolean containItens(Set<IvItem> obj, List<ItemTrocaDTO> itensTrade) {
 		boolean estaContido;
 		for(int i=0;i<itensTrade.size();i++){ 
-			estaContido = false;//item trade esta contido e na quantidade certa no iventario do soldado ?
+			estaContido = false;/* variavel responsavel por responder se o item da trade esta contido 
+			* e na quantidade certa no iventario do soldado */
 			Iterator<IvItem> iventarioIterator = obj.iterator();
 			while (iventarioIterator.hasNext()){
 				IvItem iv = iventarioIterator.next();
@@ -236,7 +251,7 @@ public class SoldadoService {
 				}
 	        }
 			if(!estaContido) {
-				return false; // algum item da trade não bate com o iventario do soldado
+				throw new TradeException("item: " + itensTrade.get(i).getId() + ", não podem ser trocados pois o soldado: " + obj.iterator().next().getSoldado().getId() + ", não tem a quantia solicitada deste item");
 				//item inesistente ou quantidade insuficiente..
 			}
 		}

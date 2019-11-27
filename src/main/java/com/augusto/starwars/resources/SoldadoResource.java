@@ -1,14 +1,11 @@
 package com.augusto.starwars.resources;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,20 +74,9 @@ public class SoldadoResource {
 	}
 	
 	@PostMapping(value="/trade")
-	public ResponseEntity<tradeDTO> trade(@RequestBody tradeDTO objDTO){
+	public ResponseEntity<Void> trade(@RequestBody tradeDTO objDTO){
 		service.trade(objDTO);
-		// conferir e melhorar service de trade
-		return ResponseEntity.noContent().build();		
-	}
-	
-	//Temporary Resource for teste
-	@GetMapping(value="/tradeteste")
-	public ResponseEntity<List<Soldado>> testeTrade() {
-		List<Soldado> resposta = new ArrayList<>();
-		Soldado sold1 = service.find(1);
-		Soldado sold2 = service.find(2);
-		resposta.addAll(Arrays.asList(sold1,sold2));
-		return ResponseEntity.ok().body(resposta);
+		return ResponseEntity.noContent().build();
 	}
 	
 }
