@@ -77,7 +77,7 @@ Você irá desenvolver uma **API REST** (sim, nós levamos a arquitetura da apli
 - [x] Atualizar localização do rebelde
 - [ ] Reportar o rebelde como um traidor
    -  [ ] Modificar Rebelde como traidor
-- [ ] Negociar itens
+- [x] Negociar itens
 - [x] Relatórios Porcentagem de traidores
 - [x] Relatórios Porcentagem de rebeldes
 - [x] Relatórios Quantidade média de cada tipo de recurso por rebelde
