@@ -6,29 +6,33 @@ import javax.validation.constraints.NotEmpty;
 
 import com.augusto.starwars.domain.IvItem;
 
-public class IventarioDTO implements Serializable {
+public class ItemTrocaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	
 	@NotEmpty(message="Preenchimento obrigatório")
-	private Integer id;
+	private Integer idItem; //id do item referido
 	@NotEmpty(message="Preenchimento obrigatório")
 	private Integer quantidade;
 	
-	public IventarioDTO() {
+	private Integer pontos;
+	
+	public ItemTrocaDTO() {
 		
 	}
 	
-	public IventarioDTO(IvItem obj) {
-		id = obj.getId();
+	public ItemTrocaDTO(IvItem obj) {
+		idItem = obj.getId();
 		quantidade = obj.getQuantidade();
+		//setPontos();
 	}
 
 	public Integer getId() {
-		return id;
+		return idItem;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.idItem = id;
 	}
 
 	public Integer getQuantidade() {
@@ -37,6 +41,14 @@ public class IventarioDTO implements Serializable {
 
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
+	}
+	
+	public Integer getPontos() {
+		return pontos;
+	}
+	
+	public void setPontos(Integer pontos) {
+		this.pontos = pontos * quantidade;
 	}
 
 }

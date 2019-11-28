@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.augusto.starwars.services.exceptions.DataIntegrityException;
 import com.augusto.starwars.services.exceptions.Forbidden;
+import com.augusto.starwars.services.exceptions.ForbiddenTraidor;
 import com.augusto.starwars.services.exceptions.ObjectNotFoundException;
+import com.augusto.starwars.services.exceptions.TradeException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -34,4 +36,25 @@ public class ResourceExceptionHandler {
 		StandardError err = new StandardError(HttpStatus.FORBIDDEN .value(), e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
+	
+	@ExceptionHandler(TradeException.class)
+	public ResponseEntity<StandardError> TradeError(TradeException e, HttpServletRequest request){
+		/*
+		 * Neste tipo de erro a requisição ocorreu corretamente então retorna 200, 
+		 * porem houve erro do dominio do problema, na mensagem vem 400 para indicar o erro
+		*/
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.OK).body(err);
+	}
+	
+	@ExceptionHandler(ForbiddenTraidor.class)
+	public ResponseEntity<StandardError> TradeError(ForbiddenTraidor e, HttpServletRequest request){
+		/*
+		 * Neste tipo de erro a requisição ocorreu corretamente então retorna 200, 
+		 * porem houve erro do dominio do problema, na mensagem vem 403 pois Traidores são proibidos de qualquer acesso a seus itens
+		*/
+		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.OK).body(err);
+	}
+	
 }

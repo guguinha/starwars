@@ -15,7 +15,7 @@ import com.augusto.starwars.domain.enums.TipoSoldado;
 @Entity
 public class Soldado implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;

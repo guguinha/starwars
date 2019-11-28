@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /* 
@@ -22,6 +24,7 @@ public class IvItem implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Integer quantidade;
+	private Integer pontos;
 	
 	@ManyToOne
 	@JoinColumn(name="item_id")
@@ -41,8 +44,27 @@ public class IvItem implements Serializable{
 		this.id = id;
 		this.quantidade = quantidade;
 		this.item = item;
+		setPontos();
 		this.soldado = soldado;
 	}
+	
+	public IvItem(IvItem ivItem) {
+		super();
+		this.id = ivItem.getId();
+		this.quantidade = ivItem.getQuantidade();
+		this.item = ivItem.getItem();
+		setPontos();
+		this.soldado = ivItem.getSoldado();
+	}
+	
+	//remove as referencias para outros objetos deixando a cargo do Garbage Colector finalizar o objeto
+	public void delete() {
+		this.soldado.getIventario().remove(this);
+		this.soldado = null;
+		this.item.getIvItem().remove(this);
+		this.item = null;		
+	}
+	
 
 	public Integer getId() {
 		return id;
@@ -76,6 +98,15 @@ public class IvItem implements Serializable{
 		this.soldado = soldado;
 	}
 	
+	public Integer getPontos() {
+		return pontos;
+	}
+	
+    @Autowired
+	public void setPontos() {
+		this.pontos = getItem().getPontos() * quantidade;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -100,6 +131,7 @@ public class IvItem implements Serializable{
 			return false;
 		return true;
 	}
+
 	
 	
 }
